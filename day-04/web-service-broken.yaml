@@ -1,0 +1,14 @@
+# Lab 5 — จงใจผิด: selector ไม่ตรงกับ labels ของ Pod
+# คาดหวัง: Endpoints ว่าง → Service เข้าไม่ได้
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service-broken
+spec:
+  type: NodePort
+  selector:
+    app: website
+  ports:
+  - port: 80
+    targetPort: 80
+    nodePort: 30081
