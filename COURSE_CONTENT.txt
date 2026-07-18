@@ -1,0 +1,120 @@
+Kubernates Course Content
+
+Introduction
+Develop a solid foundation in containers and Kubernetes with beginner-friendly, hands-on labs, in-browser challenges, demos, and a supportive community.
+
+Accessing the Lab
+Access and navigate the hands-on labs in your browser by using Code Cloud, sign up and sync your Udemy course credentials, and mark labs complete as you progress.
+
+Containers Overview
+Explore Kubernetes (K8s), the open-source container orchestration technology built by Google. Learn how containers and Docker create portable, scalable applications with images and Docker run.
+
+Container Orchestration
+Kubernetes orchestrates hundreds of containers in a clustered environment with automated scaling, load balancing, and declarative configuration.
+
+Kubernetes Architecture
+Explore Kubernetes architecture by mapping nodes, clusters, master and worker roles, etcd data store, API server, scheduler, and Docker as the container runtime, with cube ctl commands.
+
+Docker-vs-ContainerD
+Discover how Docker and containerd relate to Kubernetes, the CRI interface and OCI standards, and tools like nerd control tool and CRI control for debugging and managing runtimes.
+
+A note on Docker deprecation
+Docker was the original Kubernetes runtime, but Kubernetes now uses the container runtime interface and containerd as its runtime, while Docker remains popular for development.
+
+Kubernetes Setup - Introduction and Minikube
+Explore options to set up a Kubernetes cluster—from local runs with Docker Desktop, minikube, or kubeadm to cloud hosted services—and access it with kubectl.
+
+Demo - Minikube-Setup
+Install a local Kubernetes cluster with minikube and kubectl via VirtualBox, then deploy a hello minikube deployment, expose it, and test access.
+
+PodsExplore how pods host containers in Kubernetes, learn the 1-to-1 pod–container relationship, and scale by creating pods on nodes; deploy pods with run command and pull images from Docker Hub.
+
+Demo - Pods
+Deploy a pod in a minikube cluster using kubectl, pulling the nginx image from Docker Hub, and inspect pod status with get pods and describe pod.
+
+Introduction to YAML
+Learn how YAML represents data as key-value pairs, lists, and dictionaries, with proper indentation, colons, and spaces, using car and nutrition examples.
+
+Introduction to Coding Exercises
+Explore how coding exercises work in this course, including using ansible inventory and playbook files (.txt and .yml), updating a vegetable entry, checking solutions, and continuing through exercises.
+
+Pods with YAML
+Learn to create a Kubernetes pod with a yaml definition, detailing api version, kind, metadata, and spec, including containers and nginx image, and manage with kubectl.
+
+Demo - Pods with YAML
+Create a pod using a yaml definition with apiVersion v1, kind Pod, and metadata and spec, including an nginx container, then apply with kubectl and verify it runs.
+
+Demo - YAML - Tips
+Use Visual Studio Code with the Red Hat yaml extension to validate Kubernetes yaml, configure Kubernetes schemas, and craft pod definitions with autocomplete and error hints.
+
+Solution : Pods with YAML Lab
+Learn hands-on pod management in Kubernetes basics by creating and inspecting pods with yaml manifests, debugging image pull errors, and using kubectl to describe, delete, and apply resources.
+
+Replication Controllers and ReplicaSets
+Discover how replication controllers and replica sets maintain high availability by keeping the desired number of pod replicas, using templates, replicas, and selectors, and scale with kubectl.
+
+Demo - ReplicaSets
+Create and manage a Kubernetes replica set from a pod yaml, using labels and a selector, then scale and observe automatic pod replacement with kubectl.
+
+Solution - ReplicaSets
+Explore a hands-on Kubernetes replica sets lab, debugging image pull errors and fix mismatches, then scale replica sets from five to two while watching automatic pod recreation.
+
+Deployments
+Learn how Kubernetes deployments enable rolling updates, undo changes, and pause and resume changes, by creating deployment definitions and managing replicas and pods.
+
+Demo - Deployments
+Create and deploy a Kubernetes deployment from a deployment.yaml, using a replica set reference, set three replicas with labels, and verify with kubectl get and describe commands for nginx pods.
+
+Solution - Deployments
+Explore deploying in Kubernetes by creating deployments, replica sets, and pods; troubleshoot errors, inspect images, and validate readiness using get and describe commands.
+
+Deployments - Update and Rollback
+Understand rollouts and versioning in deployments, compare recreate versus rolling update strategies, and roll back using kube control rollout undo.
+
+Demo - Deployments - Update and Rollback
+Learn to manage deployments with updates and rollbacks using rollout status, history, and undo commands. See how revisions and image upgrades drive safe rolling updates and error handling in Kubernetes.
+
+Basics of Networking in Kubernetes
+Explore how Kubernetes assigns each pod a unique ip from the 10.244.0.0 internal network, enabling pod-to-pod communication in single- and multi-node clusters.
+
+Services - NodePort
+Discover how kubernetes services enable pod communication and external connectivity using node port, cluster IP, and load balancer, with selectors and labels linking pods.
+
+Demo - Services
+Create and expose a Kubernetes application by defining a node port service for a six-pod deployment. Access the nginx application in a browser using the node port or minikube URL.
+
+Services - ClusterIP
+Explore how Kubernetes cluster IP services group frontend, backend, Redis, and databases, providing a stable interface and random backend selection via selectors and ports.
+
+Services - Load Balancer
+Use a load balancer service to expose voting and result apps with a single URL, routing traffic to node ports across the cluster.
+
+Solution - Services
+This solution walkthrough covers Kubernetes services, including the default ClusterIP, ports and endpoints, and explains labels and selectors while demonstrating creating a web service to expose a simple web app.
+
+Microservices Application
+Explore microservices architecture by deploying a simple voting app stack on Docker, with a Python voting UI, a .NET worker, a Node.js results UI, Redis and PostgreSQL, and container links.
+
+Deploying Voting App on Kubernetes
+Deploy voting, result, and worker as pods on a Kubernetes cluster, connect them with internal services for Redis and PostgreSQL, and expose voting and result apps externally via node port.
+
+Demo - Deploying Voting App on Kubernetes
+Deploy a voting application on a Kubernetes cluster by creating pod definitions and services for voting, result, reader, worker, and Postgres, then apply manifests and verify with kubectl.
+
+Demo - Deploying Voting App on Kubernetes With Deployments
+Learn how deployments replace pods to enable easy scaling, self-healing with replica sets, and rolling updates for voting and result apps exposed on a nodeport in a Kubernetes cluster.
+
+Kubernetes on Cloud - Introduction
+Explore cloud deployment options for Kubernetes, from self-hosted to managed solutions, and deploy a voting app on Google Kubernetes Engine, Azure Kubernetes Service, and AWS EKS.
+
+Kubernetes on GCP (GKE)
+Deploy your app on Google Cloud Platform using GKE, create a cluster, configure kubectl, apply deployments and services, and expose a load balancer to verify the voting app.
+
+Kubernetes on AWS (EKS)
+Provision and configure an Amazon EKS cluster on AWS, set up kubectl access, add a worker node group, and deploy the voting app using Kubernetes manifests.
+
+Kubernetes on Azure (AKS)
+Provision an Azure Kubernetes Service (AKS) cluster and create a voting app resource group. Set up a service principal and deploy voting, Redis, Postgres, and results services with Cloud Shell.
+
+Conclusion
+Explore containers and Docker basics, and master Kubernetes concepts like pods, replica sets, deployments, and services, with hands-on kubectl and file definitions and a microservices deployment on Google Cloud Platform.

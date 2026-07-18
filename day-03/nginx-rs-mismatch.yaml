@@ -1,0 +1,23 @@
+# Lab 3 — จงใจ label mismatch (selector ≠ template labels)
+# Kubernetes จะ reject ตอน apply — ใช้ฝึกอ่าน error
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: nginx-rs-mismatch
+  labels:
+    exercise: debug
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx-wrong
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.25
+        ports:
+        - containerPort: 80

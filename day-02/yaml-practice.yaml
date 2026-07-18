@@ -1,0 +1,16 @@
+# แบบฝึก YAML พื้นฐาน (ไม่ใช่ Kubernetes resource)
+# แก้ไขค่า vegetables ให้ครบ แล้วตรวจ indentation
+
+person:
+  name: Ada
+  age: 28
+  hobbies:
+    - reading
+    - cycling
+  nutrition:
+    fruits:
+      - apple
+      - banana
+    vegetables:
+      - carrot
+      # TODO: เพิ่ม spinach และ broccoli ด้านล่าง (อย่าใช้ tab)

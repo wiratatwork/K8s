@@ -1,0 +1,125 @@
+ยกสถานการณ์ที่ Kubernates เข้ามาแก้ไขปัญหา
+[
+1. auto restart container
+2. auto scale service ตาม triffic ด้วยคำสั่ง kubectl scale
+3. rolling update -> pod ใหม่ขึ้น pod เก่ายังใช้งานได้ -> zero downtime
+4. สร้างช่องทางการสื่อสารระหว่าง container
+5. กระจาย container ตาม server ที่มี cpu/memory อัติโนมัติ
+]
+Use Case ยอดนิยมที่องค์กรเลือกมาใช้ Kubernates
+[
+รันแอปจำนวนมากแบบอัติโนมัติบนหลายเครื่อง/หลาย Cloud
+1. ต้องการ scale
+2. ต้องการ downtime น้อย
+3. triffic ไม่คงที่ -> ต้องการ auto scale
+4. ใช้ multi cloud หรือ hybrid on-premise + cloud
+5. batch workload -> ปิดเมื่อจบงาน
+]
+Use Case ที่ไม่เหมาะที่จะนำ Kubernates มาใช้
+[
+1. แอปเล็ก / traffic น้อย
+2. legacy app ที่ผูกติดกับ os
+]
+ประวัติของ Kubernates
+[Kubernetes เกิดจากประสบการณ์รัน container ระดับใหญ่ของ Google แล้วถูกเปิดเป็นโอเพนซอร์ส และส่งต่อให้ CNCF จนกลายเป็นมาตรฐานจัดการ container ของอุตสาหกรรม]
+สามารถใช้ Kubernates บน Local Windows ได้หรือไม่
+[ได้ เช่น ใช้ minikube]
+minikute คืออะไร ทำหน้าที่อะไร แนะนำ Use Case ยอดนิยมหน่อย
+[
+minikube = Kubernetes จำลองบนเครื่องคุณ สำหรับเรียนและทดลอง — ทำหน้าที่สร้าง cluster ท้องถิ่นให้ใช้ kubectl ได้เหมือนของจริง
+มี Control Plane และ Worker ในเครื่องเดียว เหมือน K8s จริง
+ใช้ kubectl ได้เหมือน Production
+ช่วย Expose บริการออกนอก
+ไม่ใช่ Production Cluster
+ไม่เหมาะกับ Load จริง
+ไม่แทน GKE / EKS / AKS ในองค์กร
+]
+kubectl คืออะไร ทำหน้าที่อะไร แนะนำ Use Case ยอดนิยมหน่อย
+[
+kubectl คือรีโมทคอนโทรลของ Kubernetes — ใช้สั่งดู สร้าง แก้ ลบ และ debug ทุกอย่างใน cluster ผ่าน API Server
+หน้าที่ ดูสถานะ
+จัดการทรัพยากร
+เข้าไปใน Container
+จัดการ Scale Rollout
+Deploy แอป
+ตรวจสุขภาพ Cluster
+Debug ตอน Pod ไม่ขึ้น
+]
+ทำไมถึงต้องใช้ minikube คู่กับ kubectl
+[minikube ทำให้มี Kubernetes ในเครื่อง — kubectl ทำให้คุณควบคุมมันได้
+minikube สร้างและรัน Clusteer
+kubectl สั่งงาน Cluster
+ใน Cloud จริงก็ใช้ kubectl
+]
+API Server คืออะไร ทำหน้าที่อะไร
+[API Server (kube-apiserver) อยู่ใน Control Plane (Master) ทำหน้าที่รับเรื่องของ Kubernetes — รับคำสั่ง ตรวจสิทธิ์ ตรวจความถูกต้อง แล้วบันทึก/ดึงสถานะจาก etcd ให้ทั้ง cluster
+ติดต่อกับ Controller / Scheduler / kubelet
+]
+etcd คืออะไร ทำหน้าที่อะไร
+[etcd คือสมุดบัญชีของ Kubernetes — เก็บว่า cluster “ควรเป็นแบบไหน” และ “ตอนนี้เป็นแบบไหน” ไว้ทั้งหมด
+อยู่ใน Control Plane (Master)
+เป็นฐานข้อมูล Key-value เก็บสถานะ (config/state) ทั้งหมดของ Cluster
+ติดต่อผ่าน API Server -> etcd
+รองรับ HA รันหลายตัวปล้องกันข้อมูลหาย
+]
+Control Plane (Master) คืออะไร ทำหน้าที่อะไร
+[Control Plane คือศูนย์บัญชาการของ Kubernetes — รับคำสั่ง เก็บสถานะ จัดวาง Pod และคอยบังคับให้ cluster เป็นไปตามที่คุณประกาศไว้]
+Worker Node คืออะไร ทำหน้าที่อะไร
+Pod คืออะไร ทำหน้าที่อะไร
+ไฟล์ lab1-commands.ps ทำหน้าที่อะไร ทำงานอย่างไร
+kubectl expose deployment hello-minikube --type=NodePort --port=8080 ทำไมใช้ port 8080 แต่ port ที่ใช้เข้าถึงผ่าน localhost จึงเป็นเลขสุ่ม
+[--port=8080 = พอร์ตของ Service ใน Kubernetes
+พอร์ตบน localhost = ทางลัดที่ minikube เปิดให้ Windows เข้าถึง — คนละชั้น จึงเป็นเลขสุ่มได้]
+NodePort คืออะไร ทำงานอย่างไร มีหน้าที่อะไรบ้าง
+[Service ที่เปิดช่องทางเข้าถึงจากภายนอก]
+1 Pod = 1 Container หมายถึง ถ้าเป็น Project เดียวกัน แต่แยก Frontend, Backend, Database จะเท่ากับ 3 Pod หรือไม่
+[ใช่ แนะนำให้ใช้ 3 Pod แล้วสื่อสารกันด้วย ClusterIP]
+ClusterIP คืออะไร ทำงานอย่างไร แนะนำ Use Case ที่เหมาะสม
+[Service ที่เปิดการสื่อสารระหว่าง Pod แต่ไม่เปิดให้เข้าจากภายนอก Cluster
+จัดการ DNS ให้แอปอื่นใน Cluster เรียกได้ด้วยชื่อ
+kube-proxy กระจาย Traffic ไปยัง Pod ที่พร้อมใช้งาน
+ถ้าต้องการให้เข้าถึงจากภายนอก ใช้ NodePort หรือ LoadBalancer แทน]
+lab2-commands.ps1 ทำงานอย่างไร
+[
+1. ตรวจเครื่องมือ + เปิด Cluster
+2. รันแบบ Imperative (kubectl run nginx) แล้วลบ
+3. รันแบบ Declarative (apply nginx-pod.yaml)
+4. Debug พบว่า ImagePullBackOff (Pull Image ไม่ได้) 
+5. แก้ไขจุดผิด และ apply อีกครั้ง
+6. สรุป
+]
+ไฟล์ lab3-commands.ps ทำหน้าที่อะไร ทำงานอย่างไร
+[
+1.ตรวจเครื่องมือ + เปิด Cluster
+2. สร้าง ReplicaSet 3 Pod รอจน Running
+3. ลบ Pod 1 ตัว แล้วรอจนกว่ากลับมาครบ 3 Pod
+4. scale เป็น 5 แล้วลดเหลือ 2
+5. 
+]
+อธิบายไฟล์ nginx-rs.yaml โดยละเอียด
+[
+สร้าง ReplicaSet ชื่อ nginx-rs
+ต้องมี 3 Pod ที่ label app=nginx (replicas: 3)
+แต่ละ Pod รัน nginx:1.25 พอร์ต 80
+ถ้า Pod หาย → สร้างใหม่จาก template อัตโนมัติ (spec.template.spec.containers)
+]
+การ scale มันจะเลือก work node ใหม่หรือไม่
+[ใช่ ถ้ามี node เดียวก็เลือก node เดิมนั้น]
+ไฟล์ lab4-commands.ps ทำหน้าที่อะไร ทำงานอย่างไร
+[
+1. ตรวจสอบเครื่องมือ
+2. Deployment 3 replicas รอจน rollout สำเร็จ
+3. เช็คความพร้อม
+4. เปลี่ยน Image แล้วรอ Rolling Update จบ
+5. ดู Rollout History แล้ว Rollout Undo กลับเวอร์ชันก่อน
+]
+หลักการทำงานของ Rolling Update เป็นอย่างไร
+[สร้าง Pod แล้วค่อยลด Pod เก่า]
+อธิบายไฟล์ nginx-deployment.yaml โดยละเอียด
+[
+type: RollingUpdate = อัปเดตทีละส่วน ไม่ลบเก่าหมดก่อน
+maxUnavailable: 1  = ยอมให้ Down Pod ได้เพียง 1 Pod
+maxSurge: 1 = สร้าง Pod เกินจำนวนชั่วคราวได้ 1 Pod (รวมเป็น 4 Pods)
+]
+มี Program ที่จัดการ minikube แบบ GUI บน Windows 11 ไหม
+[minikube dashboard]

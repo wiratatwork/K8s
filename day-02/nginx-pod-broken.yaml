@@ -1,0 +1,15 @@
+# Lab 2 — ไฟล์จงใจผิด: image ชื่อผิด → ImagePullBackOff
+# ใช้ฝึก debug ด้วย: kubectl describe pod nginx-pod-broken
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-broken
+  labels:
+    app: nginx
+    exercise: debug
+spec:
+  containers:
+  - name: nginx
+    image: nginx:this-tag-does-not-exist
+    ports:
+    - containerPort: 80
