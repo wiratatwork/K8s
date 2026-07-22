@@ -49,20 +49,20 @@ Write-Host "[4/6] Get service URL..." -ForegroundColor Yellow
 minikube service web-service --url
 Write-Host ""
 
-Write-Host "[5/6] Debug broken selector (expect empty endpoints)..." -ForegroundColor Yellow
-kubectl apply -f (Join-Path $labDir "web-service-broken.yaml")
-kubectl get endpoints web-service-broken
-kubectl describe svc web-service-broken | Select-String -Pattern "Selector|Endpoints|Type"
-Write-Host "  Expected: Endpoints empty because selector app=website != app=web" -ForegroundColor DarkYellow
-Write-Host ""
+# Write-Host "[5/6] Debug broken selector (expect empty endpoints)..." -ForegroundColor Yellow
+# kubectl apply -f (Join-Path $labDir "web-service-broken.yaml")
+# kubectl get endpoints web-service-broken
+# kubectl describe svc web-service-broken | Select-String -Pattern "Selector|Endpoints|Type"
+# Write-Host "  Expected: Endpoints empty because selector app=website != app=web" -ForegroundColor DarkYellow
+# Write-Host ""
 
-Write-Host "[6/6] Cleanup broken service..." -ForegroundColor Yellow
-kubectl delete -f (Join-Path $labDir "web-service-broken.yaml") --ignore-not-found
-Write-Host ""
+# Write-Host "[6/6] Cleanup broken service..." -ForegroundColor Yellow
+# kubectl delete -f (Join-Path $labDir "web-service-broken.yaml") --ignore-not-found
+# Write-Host ""
 
-Write-Host "========================================" -ForegroundColor Green
-Write-Host "  Lab 5 DONE" -ForegroundColor Green
-Write-Host "========================================" -ForegroundColor Green
-Write-Host "  web-deployment + web-service ยังอยู่ — ใช้ทดสอบ browser ได้" -ForegroundColor White
-Write-Host "  Cleanup: kubectl delete -f web-deployment.yaml,web-service.yaml" -ForegroundColor DarkYellow
-Write-Host ""
+# Write-Host "========================================" -ForegroundColor Green
+# Write-Host "  Lab 5 DONE" -ForegroundColor Green
+# Write-Host "========================================" -ForegroundColor Green
+# Write-Host "  web-deployment + web-service ยังอยู่ — ใช้ทดสอบ browser ได้" -ForegroundColor White
+# Write-Host "  Cleanup: kubectl delete -f web-deployment.yaml,web-service.yaml" -ForegroundColor DarkYellow
+# Write-Host ""
