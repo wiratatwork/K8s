@@ -367,5 +367,9 @@ k8s-labs/
 ---
 
 *จัดทำโดย: DevOps Engineering Team*  
-*อ้างอิงเนื้อหาจาก: COURSE_CONTENT.txt*  
+*อ้างอิงเนื้อหาจาก: COURSE_CONTENT_1.txt*  
 *เวอร์ชัน: 1.0 | วันที่: 17 กรกฎาคม 2026*
+
+---
+
+**Phase 2 (ใช้งานจริงในงาน):** ต่อด้วย `TEACHING_PLAN_PHASE2.md` และโฟลเดอร์ `day-06` … `day-10` (อ้างอิง `COURSE_CONTENT_2.txt`)

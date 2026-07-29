@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: voting-dev-editor
+  namespace: voting-dev
+rules:
+- apiGroups: ["", "apps"]
+  resources: ["pods", "services", "configmaps", "deployments"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: voting-dev-editor-binding
+  namespace: voting-dev
+subjects:
+- kind: User
+  name: dev-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: voting-dev-editor
+  apiGroup: rbac.authorization.k8s.io

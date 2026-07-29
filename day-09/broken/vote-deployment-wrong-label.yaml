@@ -1,0 +1,13 @@
+# Broken on purpose — Lab 14: selector does not match pod labels
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote
+  namespace: voting-dev
+spec:
+  type: ClusterIP
+  selector:
+    app: vote-broken
+  ports:
+  - port: 80
+    targetPort: 80
