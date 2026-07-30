@@ -2,7 +2,23 @@
 $ErrorActionPreference = "Stop"
 Set-Location $PSScriptRoot
 
+$minikubeExe = "C:\Program Files\Kubernetes\Minikube\minikube.exe"
+if (-not (Test-Path $minikubeExe)) {
+    Write-Host "ERROR: minikube not found. Install with: winget install Kubernetes.minikube" -ForegroundColor Red
+    exit 1
+}
+function minikube { & $minikubeExe @args }
+
 Write-Host "=== Check tools ===" -ForegroundColor Cyan
+if (-not (Get-Command kubectl -ErrorAction SilentlyContinue)) {
+    Write-Host "ERROR: kubectl not found." -ForegroundColor Red
+    exit 1
+}
+& $minikubeExe status 2>$null | Out-Null
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "  Starting minikube..." -ForegroundColor DarkYellow
+    minikube start --driver=docker
+}
 minikube status
 kubectl cluster-info | Out-Null
 

@@ -279,6 +279,21 @@ max 3 nodes = จำนวนที่มากที่สุดของ Node
 deploy บน push main GitHub action
 ทำ RollingUpdate
 [OK]
+อธิบายไฟล์  lab9-commands.ps1 ว่ามีหน้าที่อะไร ทำงานอย่างไร
+[
+1. เช็คเครื่องมือ minikube และ kubectrl
+2. apply Namespace / ConfigMap / Secret
+3. รอ Pod Ready
+
+]
+namespace-voting คืออะไร ประโยชน์มีอะไรบ้าง
+[แยกห้องใน Cluster]
+vote-configmap คืออะไร มีหน้าที่อะไรบ้าง
+db-secret คืออะไร มีหน้าที่อะไรบ้าง
+อธิบายไฟล์ namespace-voting.yaml ว่ามีหน้าที่อะไร ทำงานอย่างไร
+
+
+
 
 รวมคำสั่ง
 minikube start --driver=docker
