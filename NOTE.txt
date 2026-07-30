@@ -258,7 +258,27 @@ get-credentials ทำไมถึงต้องมีขั้นตอนน�
 1. ลบแอป
 2. ลบ cluster ตาม Provider
 ]
-นำ basic_app ขึ้น gke แบบ 2 pod max 10 แล้ว load test
+ทำไมเมื่อ รัน gke up ใหม่ (ไม่ได้ลบ cluster เดิมทิ้ง) ข้อมูลใน PostgreSQL ยังคงอยู่
+[ข้อมูลถูก mount ไปที่ PVC เมื่อสร้าง Pod ใหม่แต่อ้างอิง PVC ชื่อเดิม จะได้ข้อมูลเดิม หายเมื่อลบ cluster หรือ PVC โดยตรง
+ไฟล์ข้อมูลฐานเก็บที่ PersistentVolumeClaim (PVC)
+]
+Postgres อยู่ใน cluster (PVC) หมายความว่าอะไร PVC คืออะไร
+[PersistentVolumeClaim ใบขอพื้นที่เก็บข้อมูลถาวรจาก Kubernetes
+PVC postgres-pvc  ──►  GCE Persistent Disk
+]
+ทำไมแนะนำให้ใช้ managed cloud SQL
+[
+ข้อมูลไม่หาย
+Google จัดการ Operation ให้
+]
+นำ basic_app ขึ้น gke แบบ 2 pod max 10 ทำไม บอกว่า  max 10 pods แต่สร้าง autoscale 3 nodes ให้
+[
+max 10 pods = จำนวนที่มากที่สุดของ Pod (HPA)
+max 3 nodes = จำนวนที่มากที่สุดของ Node
+]
+deploy บน push main GitHub action
+ทำ RollingUpdate
+[OK]
 
 รวมคำสั่ง
 minikube start --driver=docker
