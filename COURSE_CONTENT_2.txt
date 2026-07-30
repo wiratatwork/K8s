@@ -1,0 +1,1133 @@
+Course Introduction
+Learn Kubernetes fundamentals with hands-on labs, build a custom cluster, and practice coding challenges in a live browser environment, receiving instant feedback and updates for the CKA exam.
+
+
+Certification
+Discover the certified Kubernetes administrator program, its hands-on skills to design, build, and administer available clusters, and the online proctored exam with three hours, a free retake, and documentation access.
+
+
+Course Release Notes
+
+
+The Kubernetes Trilogy
+Explore the Kubernetes trilogy by previewing architecture, networking, and certifications across beginner, administrator, and developer courses, with a lab environment and practice tests.
+
+
+Notes available at KodeKloud Notes
+
+
+Core Concepts - Section Introduction
+We start with the core concepts, outlining the cluster architecture at a high level. We then introduce API primitives such as pods, replica sets, deployments, and services.
+
+
+Cluster Architecture
+Explore the overall Kubernetes cluster architecture, from master and worker nodes to etcd, the kube API server, scheduler, controllers, kubelet, and kube proxy, with insights into container runtimes like Docker.
+
+
+Docker-vs-ContainerD
+Trace the evolution from docker to containerd, the cri interface, and the docker shim removal, then learn nerdctl as a docker-like tool for containerd management.
+
+
+A note on Docker deprecation
+Explain Docker deprecation in Kubernetes and how containerd as the CRI-compatible runtime enables Kubernetes to run without Docker, noting you can replace Docker commands with the node control command.
+
+
+ETCD For Beginners
+Explore etcd as a distributed, reliable key value store, compare it with relational and document stores, and learn to install and use etcd cuddle to put and get keys.
+
+
+ETCD in Kubernetes
+Discover how etcd stores Kubernetes cluster data—nodes, pods, configs, secrets, roles—and how deployment methods (from scratch or via kubeadm) affect etcd setup, TLS, and high availability.
+
+
+ETCD - Commands (Optional)
+
+
+Kube-API Server
+Operate the kube api server as the central manager that authenticates and validates requests, updates etcd, and coordinates pod creation through the scheduler and kubelet.
+
+
+Kube Controller Manager
+Discover how the Kubernetes controller manager runs and configures controllers, including the node controller and replication controller, to monitor and remediate nodes and pods via the API server and options.
+
+
+Kube Scheduler
+Discover how the kube scheduler decides which pod goes to which node, filters out incompatible nodes, and ranks candidates with a 0–10 score.
+
+
+Kubelet
+Explore the cubelet, the captain of a Kubernetes worker node, handling cluster registration, container loading, runtime interaction, and status reporting; learn manual kubelet installation, process checks, and TLS bootstrap basics.
+
+
+Kube Proxy
+Explore kube proxy in a Kubernetes cluster, enabling service access across nodes by iptables rules forwarding traffic from service IPs to backend pods; deployed as a daemonset on node.
+
+
+Pods
+Understand how pods encapsulate containers in Kubernetes, usually one container per pod, and scale by adding pods. Learn to deploy pods with kubectl and pull images from Docker Hub.
+
+
+Pods with YAML
+Create a pod using a yaml configuration with apiVersion, kind, metadata, and spec; define a single nginx container and deploy with kubectl, then check pods and describe the pod.
+
+
+Demo - Pods with YAML
+Create a pod via a yaml definition file, specifying apiVersion v1, kind pod, metadata with name and labels, and a single nginx container; apply with kubectl and verify.
+
+
+Practice Test Introduction
+Navigate the practice test portal to load labs, work in a live terminal, and complete topic quizzes that reinforce Kubernetes commands and configurations.
+
+
+Demo: Accessing Labs
+
+
+Course setup - accessing the labs
+
+
+Lab - Pods
+
+
+Lab Solution - Pods (optional)
+Demonstrate pod management with kubectl by listing, describing, and inspecting containers and images; create and edit pod definitions with yaml and fix image errors to run Redis.
+
+
+Recap - ReplicaSets
+Understand how replica sets manage pod replicas across nodes for high availability and load balancing, and learn to create, scale, and monitor them with kubectl.
+
+
+Lab - ReplicaSets
+
+
+Lab Solution - ReplicaSets (optional)
+Explore hands-on troubleshooting of replica sets in Kubernetes, diagnosing pod readiness, correcting the API version to apps/v1, aligning selectors with template labels, and scaling to manage pod counts.
+
+
+Deployments
+Explore how Kubernetes deployments enable rolling updates and pause-resume upgrades for production environments. Create deployments from a deployment definition file, track replica sets and pods, and undo changes with kubectl.
+
+
+Certification Tip!
+
+
+Lab - Deployments
+
+
+Lab Solution - Deployments (optional)
+Learn to manage Kubernetes deployments with kubectl: observe pods and replica sets, identify readiness, fix case-sensitive kinds, and create an httpd front end deployment with 3 replicas.
+
+
+Services
+Explore how Kubernetes services enable pod-to-pod and external communication, mapping node ports to pod ports via selectors, and supporting node port, cluster IP, and load balancer types.
+
+
+Services Cluster IP
+Learn how cluster IP services group front-end, back-end, Redis, and MySQL pods into a stable, name-based interface for internal pod communication.
+
+
+Services - Loadbalancer
+Use the load balancer service type to present a single external URL for frontend apps, routing traffic from node ports to voting and result pods on supported cloud platforms.
+
+
+Lab- Services
+
+
+Lab Solution - Services (optional)
+This lecture walks through the Kubernetes services lab, analyzes the default cluster IP service, its target port 6443 and endpoints, and demonstrates creating a node port web app service.
+
+
+Namespaces
+Master Kubernetes namespaces, including default, kube-system, and kube-public, and learn to isolate resources, apply quotas, and enable cross-namespace service access via DNS.
+
+
+Lab - Namespaces
+
+
+Lab Solution - Namespaces (optional)
+Shows using kubectl to count namespaces, inspect pods in research, create a pod in finance, locate the blue pod in marketing, and access DB service across namespaces with full DNS.
+
+
+Imperative vs Declarative
+Explore imperative and declarative approaches in Kubernetes, contrast step-by-step commands with object configuration files and YAML, and learn kubectl apply alongside create, edit, replace, and delete for exams.
+
+
+Certification Tips - Imperative Commands with Kubectl
+
+
+Kubectl Explain Command
+Learn to use kubectl explain to inspect resource fields in the terminal, list resources with kubectl api resources, and view complete fields with the recursive flag to generate YAML files.
+
+
+Lab - Imperative Commands
+
+
+Lab Solution - Imperative Commands (optional)
+Practice imperative kubectl commands to create pods, services, and deployments, including labeling, exposing with cluster IP, and managing namespaces for exam preparation.
+
+
+Kubectl Apply Command
+Learn how kubectl apply compares local configuration, live object state, and the last applied configuration to create or update Kubernetes objects declaratively, while tracking changes via a last applied annotation.
+
+
+Here's some inspiration to keep going
+
+
+A Quick Reminder
+Stay focused on the course labs and videos to maximize learning efficiency, avoiding premature local setup until the course completes, and follow a clear path to success.
+
+
+Reference Notes for lectures and labs
+
+
+Scheduling - Section Introduction
+Explore scheduling in Kubernetes by configuring multiple schedulers, manually scheduling pods, and using daemon sets, labels, selectors, and resource requests and limits.
+
+
+Manual Scheduling
+Learn to manually schedule pods without a scheduler by setting the node name at creation or creating a binding object via the pod binding API, and convert YAML to JSON.
+
+
+Lab- Manual Scheduling
+
+
+Lab Solution -  Manual Scheduling (optional)
+Schedule engine x pod manually by adding node name property, delete and replace pod, and use watch to confirm it moves from pending to running on a control plane node.
+
+
+Labels and Selectors
+Explore how labels and selectors group and filter Kubernetes objects such as pods, replica sets, and services using app and color criteria, and understand how annotations store extra details.
+
+
+Lab - Labels and Selectors
+
+
+Lab Solution : Labels and Selectors : (Optional)
+Walk through practice tests on labels and selectors in Kubernetes, using kubectl to filter pods by env and BU, count results, and fix a replica set template label mismatch.
+
+
+Taints and Tolerations
+Apply taints to nodes and add tolerations to pods to control which pods can land on which nodes, using no schedule, prefer no schedule, and no execute effects.
+
+
+Lab - Taints and Tolerations
+
+
+Lab Solution -  Taints and Tolerations (Optional)
+Practice taints and tolerations in Kubernetes, tainting a node, creating pods with and without tolerations, and observing scheduling on the control plane and node zero one.
+
+
+Node Selectors
+Discover how node selectors use node labels to place pods on larger nodes, label nodes with size=large, and apply a simple size-based constraint.
+
+
+Node Affinity
+Explore Kubernetes node affinity to place pods on specific nodes using required and preferred scheduling, with operators like in, not in, and exists; learn how execution handles label changes.
+
+
+Lab - Node Affinity
+
+
+Lab Solution - Node Affinity (Optional)
+Demonstrates configuring node affinity and labeling with kubectl to place deployments blue and red on node01 and the control plane, using nginx images and label existence.
+
+
+Taints and Tolerations vs Node Affinity
+Learn how taints and tolerations and node affinity can be combined to dedicate nodes for specific pods, preventing other pods from landing on those nodes.
+
+
+Resource Requirements
+Explore how Kubernetes schedules pods using resource requests and limits for CPU and memory. Set limits, requests, limit ranges, and quotas to manage cluster resource usage.
+
+
+A quick note on editing Pods and Deployments
+
+
+Lab - Resource Limits
+
+
+Lab Solution - Resource Limits
+Explore resource limits and requests in Kubernetes by diagnosing cpu requests, memory limits, and oomkilled failures, then practice adjusting limits and recreating pods with kubectl replace -F.
+
+
+DaemonSets
+Explain how daemonsets deploy one pod per node in a Kubernetes cluster, automatically adding or removing pods with node changes, and common use cases like monitoring agents and kube proxy.
+
+
+Lab - DaemonSets
+
+
+Lab Solution - DaemonSets (optional)
+Inspect daemon sets across all namespaces, identifying two in the cube system (cube flannel ds and cube proxy) and their pod images and scheduling. Learn to create a daemon set by converting a deployment via a dry-run workflow.
+
+
+Static Pods
+Explore how static pods let the kubelet run pods on a node without an API server. The kubelet uses the pod manifest path to load and restart pods.
+
+
+Lab - Static Pods
+
+
+Lab Solution - Static Pods (Optional)
+Identify static pods in a Kubernetes cluster by checking pod names and owner references, locate static pod manifests in /etc/kubernetes/manifests, and create, modify, and delete static pods using dry-run YAML.
+
+
+Priority Classes
+Define and apply priority classes to Kubernetes pods, ensuring higher priority workloads preempt lower ones; system components receive the highest priorities, with a global default and optional never preemption.
+
+
+Lab - Priority Classes
+
+
+Multiple Schedulers
+Learn how to deploy multiple schedulers in a Kubernetes cluster, including a custom scheduler with its own config and name. Use schedulerName to assign pods to the correct scheduler.
+
+
+Lab - Multiple Schedulers
+
+
+Lab Solution - Multiple Scheduler
+Explore a practice test for multiple schedulers by identifying the kube-scheduler-control-plane pod, its image case.gcr.io/kube-scheduler version 1.23.0, and deploying a custom scheduler via a ConfigMap and a dedicated pod.
+
+
+Configuring Scheduler Profiles
+configure multiple scheduler profiles within a single Kubernetes scheduler to customize plugins across prefilter, filter, score, and bind extension points, leveraging priority sort and node resources fit to optimize scheduling.
+
+
+References
+
+
+(2025 Updates)Admission Controllers
+Explore how admission controllers enforce cluster security by validating and shaping requests, from authentication and authorization through RBAC to automatic namespace provisioning and policy enforcement.
+
+
+(2025 Updates)Lab – Admission Controllers
+
+
+(2025 Updates)Lab Solution: Admission Controllers
+Admission controllers do not handle authentication. Learn to manage plugins via kube-apiserver.yaml: enable-admission-plugins and disable-admission-plugins, noting NodeRestriction, NamespaceAutoProvision, NamespaceLifecycle, and DefaultStorageClass.
+
+
+(2025 Updates)Validating and Mutating Admission Controllers
+Learn to distinguish mutating and validating admission controllers in Kubernetes, see how the default storage class mutates requests, and configure external admission webhooks with a deployed server and webhook configuration.
+
+
+(2025 Updates)Lab  – Validating and Mutating Admission Controllers
+
+
+(2025 Updates)Lab Solution: Validating and Mutating Admission Controllers
+Demonstrates mutating and validating admission controllers, their invocation flow, and hands-on lab tasks to deploy a webhook, a TLS secret, and run-as-non-root security policies.
+
+
+Logging and Monitoring - Section Introduction
+Explore various logging and monitoring options for Kubernetes clusters and applications, learn to view and manage logs for cluster components and apps, and apply through practical exercises.
+
+
+Monitor Cluster Components
+Monitor a Kubernetes cluster by collecting node and pod metrics with the metrics server, including cpu and memory usage. The metrics server is in memory only; for history, use Prometheus.
+
+
+Lab - Monitoring Cluster Components
+
+
+Lab Solution: Monitor Cluster Components
+Deploy the metric server and use kubectl top to monitor pods elephant, lion, and rabbit, identifying the control plane as the top cpu and rabbit as the top memory user.
+
+
+Managing Application Logs
+Explore logging in Docker and Kubernetes by streaming logs with Docker logs and kube control logs, viewing pod-specific output, and specifying container names for multi-container pods.
+
+
+Lab - Monitor Application Logs
+
+
+Lab Solution: Logging : (Optional)
+Inspect and diagnose application logs from pods and containers to identify issues like account lockouts and out of stock errors. Learn to specify container names when viewing logs.
+
+
+Application Lifecycle Management - Section Introduction
+master application lifecycle management in kubernetes by exploring rolling updates and rollbacks, configuring and scaling applications, and examining health-related primitives.
+
+
+Rolling Updates and Rollbacks
+Explore rolling updates and rollbacks in Kubernetes deployments, including rollout revisions and replica sets, while monitoring status and history and using apply, set image, and undo to upgrade or revert.
+
+
+Lab - Rolling Updates and Rollbacks
+
+
+Lab Solution: Rolling update
+Demonstrate rolling updates and rollbacks on a front-end deployment by upgrading from v1 to v3, observing blue, green, and red versions while testing with curl.
+
+
+Configure Applications
+
+
+Commands and Arguments in Docker
+Examine commands, arguments, and entry points in a pod definition and docker images, including how cmd and entry point determine startup, override, and default behavior with examples.
+
+
+Commands and Arguments in Kubernetes
+Explore commands and arguments in a Kubernetes pod, showing how docker run options map to pod definitions and how command and args override entrypoint and cmd in the docker file.
+
+
+Lab - Commands and Arguments
+
+
+Lab Solution -  Commands and Arguments (Optional)
+Explore commands and arguments in Kubernetes, showing how to specify command versus args, override entry points, and run pods with kubectl run for color-configured web apps.
+
+
+Configure Environment Variables in Applications
+Learn to set environment variables in a Kubernetes pod using the env array with name and value, and note that configmaps and secrets will be covered in future lectures.
+
+
+Configuring ConfigMaps in Applications
+Learn to manage Kubernetes configuration data with ConfigMaps by creating them imperatively or declaratively. Inject ConfigMaps into pods as environment variables or as files, enabling centralized configuration.
+
+
+Lab: Env Variables
+
+
+Lab Solution -  Env Variables (Optional)
+Learn to manage environment variables and config maps in Kubernetes by inspecting a pod, updating colors from pink to green to dark blue, and applying env from a config map.
+
+
+Secrets
+Learn how to securely store sensitive data in Kubernetes using secrets, including imperative and declarative creation, encoding with base64, and injecting values into pods as environment variables or mounted files.
+
+
+Lab - Secrets
+
+
+Additional Resource
+
+
+Lab Solution -  Secrets (Optional)
+Inspect default namespace secrets, create a generic secret with db credentials, and load them as environment variables for the web app to connect to MySQL.
+
+
+Demo: Encrypting Secret Data at Rest
+Demonstrate encrypting secret data at rest in etcd by configuring encryption provider settings and mounting the config in kube-apiserver, then verify with etcdctl.
+
+
+A Note on Secrets
+
+
+Scale Applications
+
+
+Multi Container Pods
+Explore multi-container pods in Kubernetes to run a web server and main app together, sharing lifecycle, network space, and storage, so each app instance scales with its paired web server.
+
+
+Multi container Pods Design Pattern
+Explore multi-container pod design patterns, including co-located containers, init containers, and sidecar containers, and learn how startup order and lifecycle affect logging with examples like Elasticsearch, Kibana, and Filebeat.
+
+
+Lab - Multi Container Pods
+
+
+InitContainers
+
+
+Lab - Init Containers
+
+
+Lab Solution - Init Containers (Optional)
+Identify pods with init containers, noting blue uses busybox and completed, while purple has two init containers; learn to fix orange by correcting the sleep typo.
+
+
+Self Healing Applications
+
+
+(2025 Updates) Introduction to Autoscaling?
+Explore autoscaling from a Kubernetes perspective, covering horizontal pod autoscaling (HPA) and vertical pod autoscaling (VPA) and the distinction between scaling workloads and scaling the cluster infrastructure. Learn manual and automated approaches, including kubectl scale and edit, kubeadm join, cluster autoscaler, and the roles of HPA and VPA.
+
+
+(2025 Updates) Horizontal Pod Autoscaler (HPA)?
+Explore how the horizontal pod autoscaler in Kubernetes automatically scales deployments using CPU utilization from the metrics server, with min and max replicas and declarative definitions.
+
+
+(2025 Updates) Lab - Manual Scaling?
+
+
+(2025 Updates) Lab - HPA?
+
+
+(2025 Updates) In-Place Resize of Pods?
+Explore in-place pod resizing in Kubernetes, enabled by the in-place pod vertical scaling flag, to resize cpu and memory without restart, while noting alpha status and limitations.
+
+
+(2025 Updates) Vertical Pod Autoscaling (VPA)?
+Explore vertical pod autoscaler in Kubernetes, learn how the recommender, updater, and admission controller adjust cpu and memory for pods, and compare vpa with hpa for stateful versus stateless workloads.
+
+
+(2025 Updates) Lab - Install VPA?
+
+
+(2025 Updates) Lab - Modifying CPU resources in VPA?
+
+
+Cluster Maintenance - Section Introduction
+Learn cluster maintenance for Kubernetes: perform operating system upgrades, manage node loss or removal, execute end-to-end upgrades with best-practice versioning, and practice backup, disaster recovery, and restore with live applications.
+
+
+OS Upgrades
+Safely upgrade nodes by draining workloads, cordoning unschedulable nodes, and rebooting, ensuring replica-set pods migrate while non-replicated pods may be lost if a node stays down beyond eviction timeout.
+
+
+Lab - OS Upgrades
+
+
+Kubernetes Releases
+Understand Kubernetes release versioning with major, minor, and patch numbers, plus alpha, beta, and stable stages, and explore release notes for etcd and core DNS.
+
+
+References
+
+
+Cluster Upgrade Introduction
+Upgrade Kubernetes clusters step by step using kubeadm, upgrading the control plane first and then worker nodes, while managing version skew and planning incremental upgrades.
+
+
+Demo - Cluster upgrade
+Follow a kubeadm-based upgrade from 1.28 to 1.29, including repository changes, upgrade planning, upgrading the control plane first, draining nodes, and upgrading kubelet on workers.
+
+
+Lab - Cluster Upgrade
+
+
+Backup and Restore Methods
+Learn backup and restore strategies for Kubernetes, including etcd snapshots and exporting resource configurations via declarative files or kubectl. Use Arc or Valero for automated cluster backups and practice restoration.
+
+
+Working with ETCDCTL and ETCDUTL
+
+
+Lab - Backup and Restore Methods
+
+
+Certification Exam Tip!
+
+
+References
+
+
+Security - Section Introduction
+Explore Kubernetes security primitives, authentication mechanisms, and TLS certificates, then master authorization with role-based access controls, image security, security contacts, and network policies through practice tests.
+
+
+Kubernetes Security Primitives
+Explore Kubernetes security primitives, from securing cluster hosts and API server access to authentication, authorization, TLS encryption, and network policies that govern pod communication.
+
+
+Authentication
+Secure a Kubernetes cluster by authenticating administrators and developers through the API server using static tokens, certificates, or ldap and kerberos.
+
+
+TLS Introduction
+Explore TLS certificates and their role in securing Kubernetes clusters, learn fundamentals, certificate authorities, and practical troubleshooting to master certificates in Kubernetes.
+
+
+TLS Basics
+Explore TLS basics, including public and private keys, asymmetric and symmetric encryption, and certificates. Learn how certificate authorities sign certs, CSRs, and the PKI framework for securing SSH and HTTPS.
+
+
+TLS in Kubernetes
+Secure Kubernetes clusters with TLS certificates for servers and clients, manage a CA and root certificates, and follow clear naming conventions like apiserver.crt and admin.crt.
+
+
+TLS in Kubernetes - Certificate Creation
+Generate CA and client certificates with OpenSSL, sign them with the CA key, and configure Kubernetes components such as the API server, etcd, kubelet, and admin users via kubeconfig.
+
+
+View Certificate Details
+Identify and audit all certificates in a kubeadm-provisioned Kubernetes cluster by listing files, inspecting each with OpenSSL to verify names, SANs, issuer, and expiry, and review logs for issues.
+
+
+Resource: Download Kubernetes Certificate Health Check Spreadsheet
+
+
+Lab - View Certificates
+
+
+Lab Solution - View Certification Details
+Analyze and fix kube-apiserver and etcd certificate configurations by identifying certs under /etc/kubernetes/pki, including apiserver, etcd client, and ca files, to restore kubectl access.
+
+
+Certificates API
+Learn how the Kubernetes certificates API streamlines issuing and rotating user certificates via CertificateSigningRequest objects, signing with the CA, and managing approvals with kubectl.
+
+
+Lab - Certificates API
+
+
+Lab Solution - Certificates API
+Demonstrates creating, converting to base64, and approving a Kubernetes certificate signing request for Akshay, then reviewing pending CSRs, denying the Agent Smith CSR, and deleting it.
+
+
+KubeConfig
+Explore kubeconfig fundamentals in Kubernetes: manage clusters, users, and contexts, switch contexts and namespaces, and securely store certificates and authentication details for kubectl.
+
+
+Lab - KubeConfig
+
+
+Lab Solution - KubeConfig
+Identify and fix kubeconfig issues by locating the default config at root/.cube/config, review clusters, contexts, and users, switch to dev user for test cluster one, and fix client certificate path.
+
+
+Persistent Key/Value Store
+
+
+API Groups
+Discover how Kubernetes API groups organize the core and named groups, with resources like pods and deployments and verbs such as list, get, create, and delete.
+
+
+Authorization
+Explore Kubernetes authorization mechanisms like node authorizer, ABAC, RBAC, and webhook, and how policies, namespaces, and service accounts restrict access. Learn how multiple modes are chained and configured.
+
+
+Role Based Access Controls
+Create a role with api groups, resources such as pods and configmaps, and verbs like list, get, create, and delete; bind it to a user and test permissions in namespace.
+
+
+Lab - Role-Based Access Controls
+
+
+Lab Solution - Role-Based Access Controls
+Verify kube api server authorization modes (node and rbac), inspect roles across namespaces, and adjust role bindings to enable dev user deployments in the blue namespace.
+
+
+Cluster Roles
+Create and bind cluster roles to manage cluster-wide resources such as nodes and persistent volumes, linking users via cluster role bindings for cross-namespace access.
+
+
+Lab - Cluster Roles
+
+
+Lab Solution - Cluster Roles
+Explore cluster roles and cluster role bindings, learn they are not namespaced, and practice creating cluster roles and bindings to grant Michelle access to nodes and storage.
+
+
+Service Accounts
+Discover service accounts in Kubernetes, their tokens, and how pods authenticate to the Kubernetes API. Create and attach service accounts, mount tokens, and use them with external tools.
+
+
+Lab: Service Accounts
+
+
+Lab Solution:  Service Accounts
+Identify default namespace service accounts and tokens, create and mount a dashboard-sa service account with RBAC, and verify Kubernetes API access via the dashboard.
+
+
+Image Security
+Secure image deployments by understanding Docker image naming, using private registries, and configuring Kubernetes to pull from private registries via image pull secrets.
+
+
+Lab - Image Security
+
+
+Lab Solution - Image Security
+Explore image security in kubernetes by creating a docker-registry secret, configuring a deployment to pull from a private registry, and validating image pull secret integration during rolling updates.
+
+
+Pre-requisite - Security in Docker
+Explore docker security fundamentals, including namespaces, root versus non-root users, and linux capabilities. Learn to enforce limits with docker run options like cap add, cap drop, and the privileged flag.
+
+
+Security Contexts
+Configure security contexts in Kubernetes by setting the run as user and capabilities at the pod or container level. Learn how container settings override pod defaults to secure Docker containers.
+
+
+Lab - Security Contexts
+
+
+Lab Solution -  Security Contexts
+Explore how to configure security contexts in Kubernetes pods and containers, including runAsUser settings, pod and container level overrides, and adding capabilities such as SYS_TIME and NET_ADMIN.
+
+
+Network Policy
+Explore how to implement Kubernetes network policies to allow ingress from the API pod to the database pod on port 3306, using pod selectors.
+
+
+Developing network policies
+Configure Kubernetes network policies to protect the database pod. Allow ingress only from the API pod on port 3306 using pod, namespace, and IP block selectors.
+
+
+Lab - Network Policy
+
+
+Lab Solution -  Network Policies (optional)
+Explore Kubernetes network policies: payroll policy allows ingress to port 8080 from the internal pod, while egress remains unrestricted; an internal policy enables egress to payroll 8080 and MySQL 3306.
+
+
+Kubectx and Kubens - Command Line Utilities
+
+
+(2025 Updates)Custorm Resource Definition (CRD)
+Explore how Kubernetes resources, deployment controllers, and etcd store drive deployments, and learn to create a custom resource definition for a flight ticket with schema validations.
+
+
+(2025 Updates) Lab - Custom Resource Definition
+
+
+(2025 Updates) Custom Controllers
+Master building a Kubernetes custom controller with Go, using a custom resource definition and etcd-stored flight ticket objects, to automate bookings via the Kubernetes API.
+
+
+(2025 Updates) Operator Framework
+Explore how the operator framework packages a CRD and a custom controller into a single operator that deploys and manages etcd in Kubernetes via operator hub, with backups and restores.
+
+
+Storage - Section Introduction
+Learn the Kubernetes storage basics by exploring persistent volumes, persistent volume claims, and access modes, and configure applications with persistent storage while relating solutions to third-party options.
+
+
+Docker Storage - Introduction
+Explore how storage works with containers by examining Docker storage drivers and volume driver plugins, building a foundation for understanding Kubernetes storage.
+
+
+Storage in Docker
+Docker stores image and container data under /var/lib/docker in a layered architecture with a read-only image and a writable container layer, while volumes or bind mounts persist data.
+
+
+Volume Driver Plugins in Docker
+Understand how storage drivers differ from volume driver plugins, since volumes are managed by volume drivers. Explore local volumes and cloud-backed drivers that attach container data to storage services.
+
+
+Container Storage Interface
+The container storage interface defines RPCs for Kubernetes to create and delete volumes via CSI drivers, enabling a universal standard that works with any container orchestration tool.
+
+
+Volumes
+Learn how volumes in Kubernetes persist data from transient pods by attaching and mounting storage, using hostpath and cloud options such as AWS EBS and Google Persistent Disk.
+
+
+Persistent Volumes
+Learn how persistent volumes create a cluster-wide storage pool administered centrally, with users claiming storage via persistent volume claims, starting from host path and kubectl, moving to EBS.
+
+
+Persistent Volume Claims
+Create and bind a persistent volume claim to a persistent volume, detailing binding rules, capacity, access modes, and the 1-1 PVC to volume relationship, including pending and bound states.
+
+
+Using PVCs in Pods
+
+
+Lab - Persistent Volume Claims
+
+
+Lab Solution - Persistent Volumes and Persistent Volume Claims
+Set up a host path persistent volume and a matching pvc, resolve access mode constraints, and mount the claim in the web app pod to persist logs on the host.
+
+
+Application Configuration
+
+
+Additional Topics
+
+
+Storage Class
+Enable dynamic provisioning of volumes through storage classes in Kubernetes, using provisioners like Kubernetes.io/gce to create PVs automatically when a PVC is used on Google Cloud and other providers.
+
+
+Lab - Storage Class
+
+
+Lab Solution - Storage Class
+Explore storage classes in a Kubernetes cluster, including dynamic provisioning, provisioners, and the wait-for-first-consumer binding mode, then create and bind PVCs to local PVs using a pod.
+
+
+Networking - Introduction
+Explore Kubernetes networking concepts, from IP and DNS basics to pods, cluster DNS, and ingress, and learn how CNI and Docker network namespaces support pod communication.
+
+
+Prerequisite Switching, Routing, Gateways CNI in Kubernetes
+Develop core networking skills by exploring switching, routing, gateways, and DNS, then configure Linux networking, DNS settings, and IP forwarding to enable inter-network communication.
+
+
+Prerequisite DNS
+Learn how to configure and troubleshoot DNS in linux by editing /etc/hosts, setting resolv.conf, and using nslookup and dig, while understanding domain names and name resolution.
+
+
+Prerequisite - CoreDNS
+
+
+Prerequisite Network Namespaces
+Learn how Linux network namespaces isolate containers, connect namespaces with veth pairs and a bridge, configure routing and gateway, and apply iptables nat for internet access and port forwarding.
+
+
+FAQ
+
+
+Prerequisite Docker Networking
+Explore docker networking basics, including non-network, host, and bridge modes, and see how containers connect via bridge with network namespaces and iptables NAT for port mapping.
+
+
+Prerequisite CNI
+Learn how the container networking interface (CNI) standard unifies plugin-based networking for containers, detailing bridge networks, IP assignment, and interactions with Kubernetes and other runtimes.
+
+
+Cluster Networking
+Explore Kubernetes cluster networking by configuring master and worker interfaces, hostnames, and required ports such as 6443, 10250, 10257, 10259, 30000-32767, 2379, and 2380.
+
+
+Important Note about CNI and CKA Exam
+
+
+Lab - Explore Environment
+
+
+Lab Solution - Explore Environment (optional)
+Identify the cluster nodes and network details with kubectl and ip commands, including internal IPs, eth0 and cni0 interfaces, and etcd and scheduler ports and MAC addresses.
+
+
+Pod Networking
+Explore pod networking in Kubernetes by implementing per-pod IP addresses, bridging on each node, and configuring routes, then automate with CNI that adds and deletes container interfaces.
+
+
+CNI in kubernetes
+Configure Kubernetes to use CNI plugins for pod networking by detailing container runtimes, the CNI bin and net.d directories, and bridge, gateway, IPAM, and NAT settings.
+
+
+Lab - CNI
+
+
+Lab Solution - Explore CNI (optional)
+Inspect the kubelet runtime endpoint, locate CNI binaries at /opt/cni/bin, identify available plugins, confirm the configured CNI is flannel, and note the kubelet runs flannel and portmap.
+
+
+ipam weave
+Explore IP address management in Kubernetes through CNI plugins, including pod IP assignment, subnet handling, and avoiding duplicate addresses with iPam configuration.
+
+
+Lab - Networking CNIs
+
+
+Service Networking
+Discover how cluster-wide service networking exposes pods via cluster ip and node port, with kube proxy and iptables routing traffic to the right pods.
+
+
+Lab - Service Networking
+
+
+Lab Solution - Service Networking (optional)
+Identify the node subnet and pod subnet from the cluster using weave: 192.6.10.0/24 and 10.244.0.0/16. Confirm service range 10.96.0.0/12, two kube-proxy pods, iptables proxy, deployed as a daemonset.
+
+
+DNS in kubernetes
+Kubernetes deploys a built-in DNS server by default to resolve names. Service names map to IPs, letting pods reach services within namespaces as webservice.svc.cluster.local.
+
+
+CoreDNS in Kubernetes
+Explore how Kubernetes implements DNS with CoreDNS, including the Kubernetes plugin, pod and service records, and automatic resolv.conf configuration for seamless cluster name resolution.
+
+
+Lab - CoreDNS in Kubernetes
+
+
+Lab Solution -  Explore DNS (optional)
+Explore CoreDNS in Kubernetes and configure dns with corefile, CoreDNS config map, and service access across default and payroll namespaces, including HR web service and payroll MySQL connectivity.
+
+
+Ingress
+Explore how ingress in Kubernetes enables URL-based routing and SSL termination via an ingress controller (nginx) to route traffic to multiple services with DNS and a single external URL.
+
+
+Article: Ingress
+
+
+Ingress - Annotations and rewrite-target
+
+
+Lab - CKA Ingress Networking - 1
+
+
+Lab Solution -  Ingress Networking 1  - (optional)
+Learn to configure an ingress controller across namespaces and apps, mapping paths such as wear, watch, stream, eat, and pay. Apply rewrite annotations to route traffic correctly and handle 404s.
+
+
+Lab - CKA Ingress Networking - 2
+
+
+Lab Solution - Ingress Networking - 2 (optional)
+Deploy an nginx ingress controller in the ingress space, configure a configmap and service account, expose the controller, and create an ingress with rewrite target annotations to prevent ssl redirects.
+
+
+Introduction to Gateway API (2025 updates)
+Explore gateway api, a declarative, annotation-free routing model for layer four and seven, enabling multi-tenant, tls-enabled traffic with http, tcp, udp, and grpc routes.
+
+
+Practical Guide to Gateway API (2025 Updates)
+
+
+(2025 Updates) Lab - Gateway API (2025 Updates)
+
+
+Design a Kubernetes Cluster
+Design a Kubernetes cluster by answering deployment questions, choosing between managed and self-hosted options, and planning node roles, high availability, and storage for various workloads.
+
+
+Choosing Kubernetes Infrastructure
+Choose the right Kubernetes infrastructure by comparing local and cloud deployments, turnkey versus hosted solutions, and multi-node setups, with examples like Minikube, kubeadm, and Google Kubernetes Engine (GKE).
+
+
+Configure High Availability
+Explore high availability in Kubernetes by using multiple master nodes, a load balancer, leader election, and external vs stacked etcd topologies to avoid single points of failure.
+
+
+ETCD in HA
+Configure etcd in a high availability setup using Raft for leader election and majority-based writes, choosing an odd number of nodes such as three, five, or seven to preserve quorum.
+
+
+Important Update: Kubernetes the Hard Way
+
+
+Deployment With kubeadm - Introduction
+Explore how the cube admin tool bootstraps a multi-node Kubernetes cluster by installing container D, initializing the master, ensuring the pod network, and joining workers.
+
+
+Resources
+
+
+Deployment With Kubeadm - Provision VMs With Vagrant
+Provision a kubernetes cluster with a single master and two workers using VirtualBox and Vagrant; clone the course repo, spin up VMs, and connect via ssh.
+
+
+Demo - Deployment with Kubeadm
+Bootstraps a three-node Kubernetes cluster with kubeadm, including container runtime installation and systemd cgroup configuration. Deploys a flannel network, joins workers, and verifies readiness with a sample nginx pod.
+
+
+Lab - Deploy a Kubernetes Cluster using Kubeadm
+
+
+Lab Solution - Deploy a Kubernetes Cluster using kubeadm : (Optional)
+Install kubeadm and kubelet on both control plane and node1, initialize the cluster with kubeadm init and a 10.244.0.0/16 pod network, then join node1 and deploy flannel.
+
+
+Helm - Introduction
+See how Helm acts as a package manager for Kubernetes. It bundles app objects, uses a single values.yaml for customization, and enables install, upgrade, rollback, and uninstall with one command.
+
+
+Installation and Configuration
+Install Helm after setting up a functional Kubernetes cluster and configuring kubeconfig with kubectl. Explore Linux, Windows, macOS, snap and apt-based setups (add key and sources list), pkg install Helm.
+
+
+Lab: Installing Helm
+
+
+A Quick Note on Helm2 vs Helm3
+Compare Helm 2 and Helm 3, detailing the removal of Tiller, improved RBAC, and the three-way strategic merge patch that supports reliable rollbacks, upgrades, and the live state.
+
+
+Helm Components
+Explore helm components and the CLI workflow: install charts to create releases and revisions, with metadata stored as Kubernetes secrets, and customize deployments via values.yaml and templating.
+
+
+Helm Charts
+Explore how Helm charts automate Kubernetes deployments by templating with values.yaml and templates, define chart.yaml metadata, and manage dependencies across Helm 2 and 3.
+
+
+Working With Helm - Basics
+Master the basics of the helm command line interface, exploring help, rollback, repo management, and deploying a WordPress chart from Bitnami via Artifact Hub, in Kubernetes.
+
+
+Customizing Chart Parameters
+Learn to customize helm chart deployments for WordPress by overriding values with the set option, using a custom values file, or editing values.yaml before deploying from a local chart.
+
+
+Lab: Using Helm to Deploy a chart
+
+
+Lifecycle Management With Helm
+Master Helm lifecycle management by handling releases, upgrades, downgrades, and rollbacks for Kubernetes objects, using chart version, app version, and release history to track changes, illustrated with an Nginx release.
+
+
+Lab: Upgrading a Helm Chart
+
+
+Kustomize Problem Statement and Ideology
+Explore how kustomize solves environment-specific configuration by using a base config and per-environment overlays, producing final manifests with kubectl. Learn how to avoid duplicating yaml across dev, staging, and prod.
+
+
+Kustomize vs Helm
+Compare Kustomize and Helm for per-environment Kubernetes manifests, highlighting Go templating, values.yaml, overlays, and the trade-offs between simplicity and advanced features.
+
+
+Installation/Setup
+Ensure a Kubernetes cluster and kubectl are configured, then run the script to auto-detect your operating system and install kustomize on Linux, Windows, or Mac.
+
+
+The kustomization.yaml File
+Learn how to configure a kustomization.yaml, manage resources, apply transformations such as a common label, and generate final Kubernetes configs with Kustomize build.
+
+
+Kustomize Output
+Explore how kustomize build outputs are piped into kubectl apply, creating nginx deployment and nginx service, and how to delete them with kubectl delete -f or -k.
+
+
+Kustomize ApiVersion & Kind
+Set the apiVersion and kind in a customization.yaml file, and hard code these values to guard against future breaking changes, even though optional default values exist.
+
+
+Managing Directories
+Learn to manage Kubernetes manifests across multiple directories with kustomization.yaml files, using root and subdirectory kustomizations to deploy API and database components in one command.
+
+
+Managing Directories Demo
+Organize Kubernetes manifests by directory (api, cache, database), build with kustomize, and apply with kubectl, comparing single versus per-directory kustomization.yaml approaches to deploy and verify resources.
+
+
+Lab: Managing Directories
+
+
+Common Transformers
+Learn how kustomize transformers apply common configurations across all Kubernetes resources, using commonLabel, namePrefix, nameSuffix, namespace, and commonAnnotations in a kustomization.yaml.
+
+
+Image Transformers
+Use image transformers with customize to replace nginx images with haproxy and to set new tags, illustrating changes via customization.yaml and deployment configurations.
+
+
+Transformers Demo
+Demonstrates applying common labels, namespaces, name prefixes and suffixes, annotations, and image transformations with kustomize to Kubernetes resources, showing root versus subdirectory effects.
+
+
+Lab: Transformers
+
+
+Patches Intro
+Explore how kustomize patches surgically modify specific sections of Kubernetes configurations, using add, remove, or replace operations with precise targets and values.
+
+
+Different Types of Patches
+Explains inline and file-based patch methods for json 6902 and strategic merge patches in kustomize, showing how to place patches in kustomization.yaml or in separate patch files to avoid clutter.
+
+
+Patches Dictionary
+Apply JSON 6902 and strategic merge patches to update Kubernetes labels in a deployment, using kustomization.yaml and patches files to replace the component API value with web.
+
+
+Patches List
+Modify deployment containers with kustomize patches in kustomization.yaml, using json6902 and strategic merge patches to add, replace, or remove items in the containers list via zero-based indices.
+
+
+Lab: Patches
+
+
+Overlays
+Use overlays to customize base Kubernetes configs for dev, staging, and production by applying per-environment patches and new resources via kustomization.yaml.
+
+
+Lab: Overlay
+
+
+Components
+Define and reuse Kubernetes config blocks with components to enable features like caching and external databases in dev, premium, and standalone overlays, avoiding config drift.
+
+
+Lab: Components
+
+
+Troubleshooting - Section Introduction
+Explore troubleshooting techniques for Kubernetes by diagnosing application, control plane, and worker node failures in a broken cluster through hands-on labs to fix issues.
+
+
+Application Failure
+Apply structured troubleshooting to a two-tier web and database app by mapping configuration, testing endpoints, validating service-to-pod discovery, and inspecting pod status, events, and logs for root causes.
+
+
+Lab - Application Failure
+
+
+Lab Solution - Application Failure : (Optional)
+Develop troubleshooting skills for a two-tier Kubernetes app across alpha to zeta namespaces, diagnosing MySQL service resolution, port mismatches, and endpoints to render a green webpage on success.
+
+
+Control Plane Failure
+Troubleshoot control plane failures by checking node and pod health, validating kube system components or services, and inspecting logs from kube api server, controller, manager, scheduler, kubelet, and kube-proxy.
+
+
+Lab - Control Plane Failure
+
+
+Lab Solution - Control Plane Failure : (Optional)
+Investigate control plane failure by inspecting kube-scheduler and kube-controller-manager issues, fix incorrect commands and pki paths in static pod manifests, and restore deployment scaling to the correct replica count.
+
+
+Worker Node Failure
+Troubleshoot worker node failures by checking node status with kubectl, describing nodes, and reviewing conditions such as out of disk, memory pressure, disk pressure, and last heartbeat time.
+
+
+Lab - Worker Node Failure
+
+
+Lab Solution - Worker Node Failure : (Optional)
+Troubleshoot worker node failures by inspecting kubelet status, starting the kubelet, and correcting control plane connectivity (port 6443) and ca file issues, guided by control plane and node logs.
+
+
+Network Troubleshooting
+
+
+Practice Test - Troubleshoot Network
+
+
+Lab  - JSON PATH
+
+
+Pre-Requisites - JSON PATH
+
+
+JSON Path in Kubernetes
+Learn to use jsonpath with the kube control utility to filter and format Kubernetes output, create custom columns, apply loops, and sort results through practical practice tests.
+
+
+Lab - Advanced Kubectl Commands
+
+
+Lightning Lab Introduction
+
+
+Lightning Lab - 1
+
+
+Mock Exam - 1
+
+
+Solution - Mock Exam -1 (Optional)
+Walks through a comprehensive Kubernetes administrator mock exam, solving tasks on pods, volumes, crds, services, deployments, hpa, vpa, gateway configurations, and helm upgrades.
+
+
+Mock Exam - 2
+
+
+Mock Exam - 2 - Solution : (Optional)
+Learn practical solutions for a Kubernetes admin mock exam, covering storage classes, deployments with volumes and sidecars, ingress, rolling updates, CSR and RBAC, HPA, TLS, Helm, and network policies.
+
+
+Mock Exam - 3
+
+
+Mock Exam - 3 - Solution : (Optional)
+Explore mock exam solutions for the certified Kubernetes administrator, covering kubeadm setup, RBAC, storage, config maps, network policies, taints, and deployment scaling.
+
+
+Bonus Lecture
+
+
+Frequently Asked Questions!
+
+
+More Certification Tips!
+
+
+Conclusion
+Conclude your learning journey with encouragement and practical exam prep for the certified Kubernetes administrator, featuring the ultimate CKA mock exam series, hands-on labs, and subscription benefits on KodeKloud.
+
+
+What's Next?
+Experience the ultimate CKA mock exam series with randomized 20-question tests across architecture, workload, networking, storage, and troubleshooting, using four clusters and auto-graded results.
+
+
+Kubernetes Update and Project Videos - Your Essential Guide

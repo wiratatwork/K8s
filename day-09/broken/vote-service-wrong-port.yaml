@@ -1,0 +1,13 @@
+# Broken on purpose — Lab 14: wrong targetPort
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote
+  namespace: voting-dev
+spec:
+  type: ClusterIP
+  selector:
+    app: vote
+  ports:
+  - port: 80
+    targetPort: 8080
