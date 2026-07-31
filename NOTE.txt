@@ -287,11 +287,150 @@ deploy บน push main GitHub action
 
 ]
 namespace-voting คืออะไร ประโยชน์มีอะไรบ้าง
-[แยกห้องใน Cluster]
+[
+สร้าง Namespace ชื่อว่า 'voting-dev' สำหรับแยก Voting App ออกจาก Namespace อื่นใน Cluster
+เสมือนสร้างกล่องแยกสำหรับเก็บ Pod / Deployment / Service/ ConfigMap / Secret
+สามารถควบคุมสิทธิ์ RBAC ต่อ Namespace ได้
+]
+อธิบายไฟล์ namespace-voting.yaml โดยละเอียด
+[
+kind: Namespace = สร้าง Object ชนิด Namespace
+name: voting-dev = ชื่อ Namespace
+env: dev = label สำหรับ filter
+app.kubernetes.io/part-of: voting-app = label สำหรับ filter
+]
 vote-configmap คืออะไร มีหน้าที่อะไรบ้าง
+[เก็บค่า Config ที่ไม่ลับ]
+อธิบายไฟล์ vote-configmap.yaml โดยละเอียด
+[
+ประกาศ ConfigMap ชื่อ voting-config ใน namespace voting-dev
+kind: ConfigMap = สร้าง Object ชนิด ConfigMap
+name: ชื่อ ConfigMap ไว้ใช้อ้างอิงใน Deployment
+namespace: voting-dev = ให้เฉพาะ Deployment ใน namespace voting-dev เห็นเท่านั้น
+data: = บล็อกข้อมูลแบบ key - string value
+]
+การใช้งาน ConfigMap แตกต่างจาก .env อย่างไร
+[แนวคิดเหมือนกันคือ แยก config ออกจาก Code
+ใช้ .env บน Local และ ConfigMap / Secret บน K8s]
+นิยมใช้คู่กันไหม ระหว่าง .env และ ConfigMap / Secret แล้วถ้ามีชื่อตัวแปรเหมือนกัน จะถูก Override ไหม
+[ใช้ .env บน Local และ ConfigMap / Secret บน K8s
+ซ้ำ โดยมีลำดังนี้ .env -> ConfigForm -> Deployment env:]
 db-secret คืออะไร มีหน้าที่อะไรบ้าง
-อธิบายไฟล์ namespace-voting.yaml ว่ามีหน้าที่อะไร ทำงานอย่างไร
-
+[ที่เก็บรหัส แล้วส่งให้ Deployment db ผ่าน secretKeyRef
+งาน Production ใช้ Vault / Cloud Secret Manager / CI สร้าง Secret ตอน Deploy]
+อธิบายไฟล์ db-secret.yaml โดยละเอียด
+[
+kind: Secret = สร้าง Object ชนิด Secret
+name: db-secret = ชื่อ Secret
+namespace: voting-dev = กำหนดการมองเห็นเฉพาะ namespace voting-dev
+type: Opaque = ประเภท Secret ทั่วไป
+stringData: = ใส่ข้อความธรรมดา -> K8s แปลงเป็น base64
+สร้าง Pod แล้วค่าถูกฉีดเข้าไป
+]
+อธิบายไฟล์ vote-deployment-config.yaml โดยละเอียด
+[
+ประกาศ Deployment โดยดึงค่า Config มาจาก ConfigMap
+kind: Deployment = สร้าง Object ชนิด Deployment
+metadata.name: vote = ชื่อ Deployment
+metadata.namespace: voting-dev = ระบุ Namespace
+replicas: 1 = จำนวน Pod ที่ต้องการ
+selector.matchLabels.app: vote = ถือครอง Pod ชื่อ  'vote'
+template = แม่แบบการสร้าง Pod
+name: vote = ชื่อ Container ใน Pod
+image: dockersamples/examplevotingapp_vote = Image ที่ใช้
+ports.containerPort: 80 = ฟังที่ Port 80 ของ Container
+envFrom.configMapRef.name: vote-config = นำเข้าค่าจาก ConfigMap
+]
+อธิบายไฟล์ db-deployment-secret.yaml โดยละเอียด
+[
+ประกาศ Deployment ของ Postgres ใน namespace 'voting-dev' และดึง Secret มาจาก 'db-secret'
+kind: Deployment = สร้าง Object Deployment
+metadata.name: db = ชื่อ Deployment
+metadata.namespace: voting-dev = ระบุ Namespace
+metadata.labels.app: db = Label ของ Deployment
+replicas: 1 = สร้าง 1 Pod
+selector.matchLabels.app: db = Deployment ถือครอง Pod ที่ app:db
+template.metadata.labels.app: db = Label บน Pod
+name: postgres = ชื่อ Container
+image: postgres:15-alpine = Image ที่ใช้
+containerPort: 5432 = เปิด Port 5432 ที่ Container
+env.name.valueFlorm.secretKeyRef.name และ key = นำเข้าค่าจาก Secret 'db-secret'
+ถ้าชื่อ Key บน Image กับ Secret ไม่ตรงกัน ต้อง map ที่ละตัวแปร
+]
+Deployment vote เชื่อมต่อกับ postgres อย่างไร กำหนดที่ไหน
+[จากตัวอย่างเก่า vote ไม่ได้เชื่อมกับ postgres โดยตรง แต่เชื่อมกับ redis
+image ของ vote มองหา service ชื่อ redis]
+Pod ใน voting-dev เรียก Service db ใน default ได้ไหม — ต้องใช้ DNS แบบไหน?
+[ได้ <service>.<namespace>.svc.cluster.local เช่น db.default.svc.cluster.local หรือ 	
+db.default]
+Label env: dev บน Namespace มีผลต่อการรันแอปไหม หรือมีไว้ทำอย่างอื่น?
+[ไม่มีผล ใช้ filter เท่านั้น ถ้าลบออก แอปยังรันเหมือนเดิม]
+แยก voting-dev กับ voting-staging ใน cluster เดียว แก้ปัญหาอะไรได้บ้าง และยังแก้ไม่ได้อะไร?
+[
+แก้ได้
+ชื่อ Resource ชนกัน เพราะแยก namespace
+แยก Config คนละชุดได้
+RBAC แยกต่อ namespace ได้
+จำลองหลาย env บน cluster เดียวกันได้
+แก้ไม่ได้
+ไม่เท่ากับแยก Infra, แยกเครือข่าย, แยกสิทธิ์ และความทนทาน
+มักต้องเติม NetworkPolicy, RBAC, ResourceQuota หรือ Cluster แยก
+]
+envFrom กับ mount ConfigMap เป็นไฟล์ เหมาะกับสถานการณ์ต่างกันอย่างไร?
+[
+envForm อ่านทั้งไฟล์ ไฟล์ไม่ใหญ่มาก / printenv แล้วค่าแสดงทั้งหมด ต้อง reload pod ใหม่ เมื่อค่าเปลี่ยน
+volumeMounts แต่ละ key กลายเป็นไฟล์แยกใต้ /etc/config/ แล้วอ่านไฟล์เอา เหมาะเมื่อไฟล์ใหญ่ ไม่ต้อง reload
+]
+แก้ ConfigMap แล้ว Pod ที่รันอยู่เห็นค่าใหม่ทันทีไหม? ต้องทำอะไรเพิ่ม?
+[หากใช้ envForm ต้อง rollout restart หรือสร้าง Pod ใหม่
+หากใช้ volumeMounts ให้ทำ hot reload การอ่านไฟล์]
+base64 ใน Secret แปลว่า “เข้ารหัสปลอดภัย” หรือแค่ encoding?
+[encoding ใครมีสิทธิ์ดู secret จะถอดรหัสได้ (มี RBAC เพิ่มเติม)]
+ทำไม lab ใช้ stringData แต่ kubectl get secret -o yaml มักเห็นเป็น data?
+[stringData ให้พิมพ์รหัสแบบ plain อ่านง่าย - cluster เก็บและโชว์กลับเป็น data encoding เสมือ]
+type: Opaque หมายความว่าอะไร ต่างจาก Secret แบบ TLS อย่างไร?
+[Opaque = Secret ทั่วไป
+TLS = tls.crt และ tls.key]
+ทำไม db-secret.yaml เตือนว่าอย่า commit รหัส production — แล้วงานจริงควรเก็บรหัสที่ไหน?
+[git จำประวัติ เก็บที่ Cloud Secret Manager / Vault  / CICD Secret]
+ใครก็ตามที่ get secret ใน namespace ได้ จะอ่าน password ได้ง่ายแค่ไหน?
+[ง่ายมาก decoding ได้]
+ทำไม vote ใช้ envFrom.configMapRef แต่ db ใช้ secretKeyRef ทีละตัว?
+[envFrom.configMapRef = แอปต้อง env ชื่อเดียวกัน
+secretKeyRef = image ต้องการชื่อตายตัว เลยต้อง map ทีละตัว]
+ถ้า key ใน Secret คือ username แต่ Postgres ต้องการ POSTGRES_USER — จะแก้ที่ Secret หรือที่ Deployment ดีกว่า?
+[แก้ Deployment เมื่อ secret ใช้ร่วมกันหลาย app
+แก้ Secret เมื่อทุก app ใช้เป็นเรื่องเดียวกัน]
+POSTGRES_DB: postgres ใส่ตรงๆ ใน Deployment ได้เพราะอะไร — ควรย้ายไป ConfigMap ไหม?
+[ไม่ใช่ความลับ ย้ายไป ConfigMap ได้ แต่ไม่บังคับ]
+ถ้า ConfigMap กับ Secret มี key ชื่อซ้ำ และฉีดเข้า container เดียวกัน ค่าไหนชนะ?
+[จะใช้ค่าที่ประกาศหลังสุด]
+เทียบแนวคิด (.env / image / hard-code)
+[
+1. Hard-code ค่าเปลี่ยนต้องแก้ code -> Build ใหม่ / รหัสหลุดใน git
+2. ENV ใน Dockerfile ค่าเปลี่ยนต้อง build/push image ใหม่
+3. .env (local) ใช้เมื่อ local
+]
+ถ้าใส่ password ใน Dockerfile เป็น ENV แล้วมาทับด้วย Secret ใน K8s — อันไหนมีผลตอนรัน?
+[Secret]
+ทำไม Lab 9 deploy แค่ vote + db — พอโหวตแล้วข้อมูลลง Postgres ได้เลยไหม?
+[ไม่ได้ เพราะ Service ไม่ครบ]
+vote เชื่อม Postgres ตรงๆ หรือไม่ — ถ้าไม่ ใครเป็นตัวเชื่อม และกำหนดที่ไหน?
+[ไม่เชื่อมตรง ๆ worker อ่านโหวตจาก Redis แล้วเขียนลง Postgres
+กำหนดที่ Image ของ vote ว่าให้คุยกับ Redis]
+lab9-commands.ps1 apply Namespace/Config/Secret ก่อน Deployment เพราะเหตุใด?
+[เพราะ Deployment พึ่งพา Object เหล่านั้นตอนสร้าง Pod]
+คำสั่ง printenv | Select-String "OPTION_" พิสูจน์อะไรได้ และพิสูจน์ไม่ได้อะไร?
+[พิสูจน์ว่า ConfigMap ถูกฉีดเป็น env ใน Pod vote สำเร็จ แต่ไม่ได้บอกว่าแอปทำงานถูกต้อง]
+ตรวจว่า db ได้ password จาก Secret จริง ควรใช้วิธีไหนที่ปลอดภัยกว่าการ printenv โชว์รหัส?
+[kubectl get secret db-secret -n voting-dev
+ตรวจว่า Secret มี key ที่ต้องการ โดยไม่ decode
+หรือ
+kubectl describe pod -n voting-dev -l app=db
+ดูว่าไม่มี CreateContainerConfigError และมีการอ้างอิง db-secret / key password
+]
+เมื่อไหร่ควรใช้ External Secrets / Vault แทน Secret ธรรมดาใน YAML?
+[เมื่อเป็นรหัสที่สำคัญต่อธุรกิจ]
 
 
 
