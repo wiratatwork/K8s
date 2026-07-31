@@ -431,6 +431,15 @@ kubectl describe pod -n voting-dev -l app=db
 ]
 เมื่อไหร่ควรใช้ External Secrets / Vault แทน Secret ธรรมดาใน YAML?
 [เมื่อเป็นรหัสที่สำคัญต่อธุรกิจ]
+ทำไมการไม่ Hard-code ค่าตัวแปร (เช่น Feature Flags หรือค่าเริ่มต้น) ไว้ใน Container Image หรือไฟล์ Deployment จึงสำคัญที่สุดเมื่อต้องนำแอปพลิเคชันไปรันในหลาย Environment (Dev, Staging, Prod)?
+[
+1. Build Image ครั้งเดียว นำไปรันได้ทุก environment
+2. ควบคุมความปลอดภัย ไม่ให้ข้อมูลความลับรั่วไหล
+3. Image เดียวกัน รันทุกสภาพแวดล้อม มั่นใจว่ารันได้เหมือนกันทุก environment
+4. ปรับแต่งค่าได้ทันที ไม่ต้อง Rebuild
+]
+
+
 
 
 
