@@ -438,8 +438,92 @@ kubectl describe pod -n voting-dev -l app=db
 3. Image เดียวกัน รันทุกสภาพแวดล้อม มั่นใจว่ารันได้เหมือนกันทุก environment
 4. ปรับแต่งค่าได้ทันที ไม่ต้อง Rebuild
 ]
+ไฟล์ lab10-commands.ps1 ทำหน้าที่อะไร ทำงานอย่างไร
+[ทดสอบการ Deploy พร้อม Resource Limit และ Liveness Probes]
+Probes คืออะไร
+[
+Probes = Kubernates ตรวจสอบ Container เป็นระยะว่าพร้อมรับ traffic หรือไม่
+1. Readiness = ล้มแล้ว ไม่ส่ง traffic ไป Pod นั้น / ใช้ตอนแอปกำลัง Boot
+2. Liveness = restart container เมื่อไม่ผ่านหลายครั้ง
+3. Startup = หน่วงเวลา Readiness/Liveness ช่วงแอปกำลัง Boot นาน
+]
+วิธีเช็ค Probes ทำอย่างไรได้บ้าง
+[
+1. httpGet = ส่ง GET ไปเป็นระยะ
+2. tcpSocket = เช็คว่าพอร์ตเปิดอยู่
+3. exec = รันคำสั่งใน Container
+]
+อธิบายไฟล์ web-deployment-probes.yaml โดยละเอียด
+[
+readinessProbe: 
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 3
+          periodSeconds: 5
+ตรวจ Readiness ด้วยวิธี httpGet ที่ port 80 หลัง Container start 3 วินาที เช็คทุก 5 วินาที
 
-
+livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 10
+ตรวจ Liveness ด้วยวิธี httpGet ที่ port 80 หลัง Container start 10 วินาที เช็คทุก 10 วินาที
+]
+เช็ค Readiness ทุก 5 วิตลอดไปเลยใช่หรือไม่
+[ใช่ ตลอดอายุของ Container ถ้าไม่ผ่าน ตัดออกจาก Endpoint ไม่ restart]
+เช็ค Liveness ทุก 10 วิตลอดไปเลยใช่หรือไม่
+[ใช่ ตลอดอายุ Container]
+ถ้ามันเช็คตลอดอายุของ Container แล้วอะไรคือความแตกต่างระหว่าง Readiness และ Liveness
+[
+1. ในงานจริง มักยิง url คนละเส้น
+2. ถ้าไม่ผ่าน Readiness จะไม่นำ Pod นั้นให้ผู้ใช้ ไม่ restart / Liveness จะ restart ให้]
+นิยมใช้คู่กันไหม หรือสามารถใช้อย่างใดอย่างหนึ่งก็เพียงพอแล้ว
+[มักใช้คู่กัน คือ อย่าส่ง request ตอนยังไม่พร้อม และ restart ถ้า Container ค้าง]
+ไฟล์ lab11-commands.ps1 ทำหน้าที่อะไร ทำงานอย่างไร
+[
+1. เปิด metrics-server รอจน kubectl top ผ่าน
+2. ใส่ CPU request 50% แล้ว apply HPA ใน namespace 'voting-dev'
+3. แสดง log
+]
+อธิบายไฟล์ vote-hpa.yaml โดยละเอียด
+[
+kind: HorizontalPodAutoscaler = สร้าง Object HorizontalPodAutoscaler ตัวเพิ่มลด Pod
+name: vote = ชื่อ HPA
+namespace: voting-dev = ระบุ namespace
+scaleTargetRef.name: vote = ชี้ไปที่ deployment 'vote'
+minReplicas: 2 = อย่างน้อย 2 Pod
+maxReplicas: 6 = เพิ่มได้สูงสุด 6 Pod
+metrics.type: Resource = ใช้ resource ของ Pod เป็นตัวกำหนด
+metrics.name: cpu = ดู cpu
+metrics.type: Utilization = ดูที่ % ของ request
+metrics.averageUtilization: 50 = เฉลี่ย 50% ของ Pod
+]
+"รักษา CPU เฉลี่ยให้ใกล้ 50% ของ request" มีความหมายว่าอย่างไร ของ Scenario ประกอบ 
+[HPA รักษาให้ทุก Pod ใช้ CPU จริง เท่ากับครึ่งหนึ่ง (50%) ของ CPU ที่จองไว้]
+เกิดอะไรขึ้นเมื่อ OOMKill 
+[Pod ถูก kill เพราะใช้ RAM เกิน จากนั้น K8s สร้าง Pod ใหม่]
+ถ้าตั้งแค่ limits ไม่มี requests scheduler กับ HPA จะได้รับผลกระทบอย่างไร?
+[Scheduler อาจนำ Pod ไปวางบน Node ที่มี Resource ที่ไม่เพียงพอ ทำให้ระบบไม่เสถียร
+HPA ไม่สามารถ Autoscale ให้ได้
+]
+ทำไม CPU เกิน limit ถึง throttle แต่ memory เกินถึง OOMKill?
+[
+CPU สามารถบีบอัด โดยลดความเร็วการประมวลผลได้ จึง throttling ช้าแต่ใช้งานต่อได้
+Memory บีบอัดไม่ได้ จึงต้อง Kill Pod เพื่อป้องกันไม่ให้ Node ค้าง
+]
+ตั้ง requests สูงเกินความจริง มีข้อเสียอะไรต่อความหนาแน่นของ cluster?
+[
+Cluster เต็มเร็ว แม้ทรัพยากรยังเหลือ เพราะถูก Reserve ไว้ให้ Pod
+บน Cloud เสียค่าใช้จ่ายมากขึ้น เพราะต้อง Scale Node มากขึ้น
+]
+จะรู้ได้อย่างไรว่าควรตั้ง Request และ Limit ที่เท่าไหร่จึงจะเพียงต่อ App ของเรา
+[
+1. ดูจาก History Metric ช่วง Staging
+2. Load Testing ด้วย JMeter
+3. ใช้ Program VPA Recommender
+]
 
 
 
@@ -455,3 +539,34 @@ minikube addons enable metrics-server
 kubectl get hpa vote --watch
 kubectl get pods -l app=vote --watch
 gcloud container clusters create voting-gke --num-nodes=2 --machine-type=e2-medium --zone=asia-southeast1-b
+
+
+คำถาม
+Resources (requests / limits)
+
+จาก kubectl top กับค่าใน YAML — จะรู้ได้อย่างไรว่า limit แคบไปหรือกว้างไป?
+Probes (Lab 10 / web-deployment-probes.yaml)
+ทำไม readiness ไม่ผ่านถึงแค่ตัด traffic แต่ liveness ไม่ผ่านถึง restart?
+ถ้า liveness เช็คการเชื่อม DB แล้ว DB ล่มชั่วคราว จะเกิดอะไรขึ้นกับทุก Pod?
+ใน lab ทั้ง readiness และ liveness ยิง GET / เหมือนกัน — พอสำหรับ production ไหม? ควรแยกอย่างไร?
+initialDelaySeconds ของ liveness สั้นเกินไป ส่งผลอย่างไรตอนแอป boot ช้า?
+OOM (memory-hog-deployment.yaml)
+ทำไม stress ขอ 200M แต่ limit 128Mi ถึง restart วน ไม่ใช่รันช้าลงแบบ CPU?
+เห็น OOMKilled แล้ว จะแยกว่าแอป memory leak กับ limit ตั้งต่ำเกินไปได้อย่างไร?
+metrics-server & kubectl top (Lab 11)
+ทำไมเปิด metrics-server แล้วยังต้องรอสักพักถึง kubectl top ใช้ได้?
+kubectl top กับ kubectl describe บอกคนละเรื่องอะไรเกี่ยวกับ “สุขภาพ” ของ Pod?
+HPA (vote-hpa.yaml)
+averageUtilization: 50 คิดจากอะไร — usage จริง หรือ % ของ requests.cpu?
+ทำไม HPA ขึ้น TARGETS เป็น <unknown> ได้แม้ metrics-server เปิดแล้ว?
+มีโหลดสูงแต่ replica ไม่เพิ่ม — สาเหตุที่เป็นไปได้มีอะไรบ้าง? (metric, maxReplicas, requests, cooldown)
+minReplicas: 2 ในขณะที่ Deployment เดิมมี 1 replica — ใคร “ชนะ” หลัง apply HPA?
+HPA scale ตาม CPU อย่างเดียว พอไหมสำหรับแอปที่ bottleneck เป็น memory หรือ queue length?
+Logs
+Pod restart แล้ว kubectl logs ว่าง — จะดู log รอบก่อน crash อย่างไร?
+ดู log จาก Deployment กับจากชื่อ Pod ต่างกันอย่างไรในสถานการณ์มีหลาย replica?
+อ่านเพิ่ม (Taints / DaemonSet)
+FailedScheduling เพราะ taint ต่างจาก OOMKilled อย่างไร?
+ทำไม agent เก็บ log / metrics มักเป็น DaemonSet ไม่ใช่ Deployment ธรรมดา?
+เกณฑ์ Lab 11 (จากไกด์)
+อธิบายด้วยคำตัวเองได้ไหมว่า HPA ใน lab นี้ใช้ metric อะไร และทำไมต้องมี requests.cpu?

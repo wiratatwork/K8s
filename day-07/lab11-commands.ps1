@@ -22,12 +22,9 @@ Write-Host "`n=== HPA (namespace voting-dev from day-06) ===" -ForegroundColor C
 if (-not (kubectl get ns voting-dev 2>$null)) {
   Write-Host "Run day-06 lab9 first, or skip HPA section." -ForegroundColor Yellow
 } else {
-  # Ensure vote has CPU requests for HPA
-  kubectl patch deployment vote -n voting-dev --type=json -p='[
-    {"op":"add","path":"/spec/template/spec/containers/0/resources","value":{
-      "requests":{"cpu":"100m","memory":"64Mi"},
-      "limits":{"cpu":"250m","memory":"128Mi"}
-    }}]' 2>$null
+  kubectl set resources deployment vote -n voting-dev `
+    --requests=cpu=100m,memory=64Mi `
+    --limits=cpu=250m,memory=128Mi
   kubectl apply -f vote-hpa.yaml
   kubectl get hpa -n voting-dev
   Write-Host "Watch: kubectl get hpa -n voting-dev -w"
