@@ -524,6 +524,24 @@ Cluster เต็มเร็ว แม้ทรัพยากรยังเ�
 2. Load Testing ด้วย JMeter
 3. ใช้ Program VPA Recommender
 ]
+อธิบายว่าไฟล์ day-08/lab12-commands.ps1 มีหน้าที่อะไร ทำงานอย่างไร
+[
+1. เช็คว่ามี namespace voting-dev แล้วหรือยัง
+2. สร้าง PVC ชื่อ postgres-data
+3. deploy db และ mount PVC ชื่อ 'postgres-data' ด้วยคำสั่ง volumeMounts
+4. เช็คว่า Mount สำเร็จ
+]
+อธิบายส่วนที่สำคัญของ postgres-pvc.yaml
+[
+kind: PersistentVolumeClaim = ขอสร้าง PersistentVolume
+name: postgres-data = ชื่อ PVC
+namespace: voting-dev = ชื่อ namespace
+ReadWriteOnce = เขียว อ่าวพร้อมกันได้แค่ node เดียวเท่านั้น ป้องกัน Data Corruption
+storage: 1Gi = จองพื้นที่ 1GB
+]
+
+
+
 
 
 
@@ -539,34 +557,3 @@ minikube addons enable metrics-server
 kubectl get hpa vote --watch
 kubectl get pods -l app=vote --watch
 gcloud container clusters create voting-gke --num-nodes=2 --machine-type=e2-medium --zone=asia-southeast1-b
-
-
-คำถาม
-Resources (requests / limits)
-
-จาก kubectl top กับค่าใน YAML — จะรู้ได้อย่างไรว่า limit แคบไปหรือกว้างไป?
-Probes (Lab 10 / web-deployment-probes.yaml)
-ทำไม readiness ไม่ผ่านถึงแค่ตัด traffic แต่ liveness ไม่ผ่านถึง restart?
-ถ้า liveness เช็คการเชื่อม DB แล้ว DB ล่มชั่วคราว จะเกิดอะไรขึ้นกับทุก Pod?
-ใน lab ทั้ง readiness และ liveness ยิง GET / เหมือนกัน — พอสำหรับ production ไหม? ควรแยกอย่างไร?
-initialDelaySeconds ของ liveness สั้นเกินไป ส่งผลอย่างไรตอนแอป boot ช้า?
-OOM (memory-hog-deployment.yaml)
-ทำไม stress ขอ 200M แต่ limit 128Mi ถึง restart วน ไม่ใช่รันช้าลงแบบ CPU?
-เห็น OOMKilled แล้ว จะแยกว่าแอป memory leak กับ limit ตั้งต่ำเกินไปได้อย่างไร?
-metrics-server & kubectl top (Lab 11)
-ทำไมเปิด metrics-server แล้วยังต้องรอสักพักถึง kubectl top ใช้ได้?
-kubectl top กับ kubectl describe บอกคนละเรื่องอะไรเกี่ยวกับ “สุขภาพ” ของ Pod?
-HPA (vote-hpa.yaml)
-averageUtilization: 50 คิดจากอะไร — usage จริง หรือ % ของ requests.cpu?
-ทำไม HPA ขึ้น TARGETS เป็น <unknown> ได้แม้ metrics-server เปิดแล้ว?
-มีโหลดสูงแต่ replica ไม่เพิ่ม — สาเหตุที่เป็นไปได้มีอะไรบ้าง? (metric, maxReplicas, requests, cooldown)
-minReplicas: 2 ในขณะที่ Deployment เดิมมี 1 replica — ใคร “ชนะ” หลัง apply HPA?
-HPA scale ตาม CPU อย่างเดียว พอไหมสำหรับแอปที่ bottleneck เป็น memory หรือ queue length?
-Logs
-Pod restart แล้ว kubectl logs ว่าง — จะดู log รอบก่อน crash อย่างไร?
-ดู log จาก Deployment กับจากชื่อ Pod ต่างกันอย่างไรในสถานการณ์มีหลาย replica?
-อ่านเพิ่ม (Taints / DaemonSet)
-FailedScheduling เพราะ taint ต่างจาก OOMKilled อย่างไร?
-ทำไม agent เก็บ log / metrics มักเป็น DaemonSet ไม่ใช่ Deployment ธรรมดา?
-เกณฑ์ Lab 11 (จากไกด์)
-อธิบายด้วยคำตัวเองได้ไหมว่า HPA ใน lab นี้ใช้ metric อะไร และทำไมต้องมี requests.cpu?
