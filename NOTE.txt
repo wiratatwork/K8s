@@ -569,6 +569,32 @@ Ingress คืออะไร ช่วยเล่า Scenario ที่มี 
 จุดรวม Security เช่น Rate Limit / Authentication
 Load Balancer แบบ 1 ตัว ลดค่าใช้จ่าย แทนที่จะมี 1 Load Balancer ต่อ 1 Service
 ]
+อธิบายส่วนสำคัญของไฟล์ day-10\lab15-helm.ps1
+Helm คืออะไร
+[Helm เป็นเครื่องมือช่วยสร้าง/จัดการ Kubernetes resources
+Package Manager ที่ช่วยติดตั้งและจัดการ Kubernetes Applications ผ่าน Charts, Values และ Releases
+concept คล้าย npm
+สามารถจัดการประวัติการจัดการ Kubernates ได้ด้วย
+]
+คำศัพท์ที่เกี่ยวกับ Helm มีอะไรบ้าง คืออะไร
+[
+Repository = ที่เก็บ Chats
+Chart = Package สำหรับ Kubernates Application
+Release = Instance ที่ติดตั้งจาก Chart
+Values = Configuration ของ Chart
+Revision = Version ของ Release หลัง install/upgrade
+Helm ติดตั้งแอปจาก chart แทนเขียน YAML เองทั้งก้อน
+]
+เมื่อมี cloud kubernates แล้ว ยังจำเป็นต้องใช้ helm อยู่ไหม
+[สามารถใช้งานได้ มาเป็นตัวช่วยจัดการ Kubernates
+สามารถสร้าง Software โดยไม่ต้องเขียน YML เองได้ เช่น Prometheus Grafana Redis]
+อธิบาย คำศัพท์ ที่พบใน folder 'day-10'
+[
+Helm = ติดตั้งแอปจาก chart แทนเขียน YAML เองทั้งก้อน
+Kustomize = base เดียว + overlay ต่อ environment
+RBAC = กำหนดว่าใครทำอะไรได้ใน cluster
+Network Policy = จำกัดว่า pod ไหนคุยกับ pod ไหนได้
+]
 
 
 รวมคำสั่ง
