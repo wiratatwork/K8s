@@ -539,10 +539,36 @@ namespace: voting-dev = ชื่อ namespace
 ReadWriteOnce = เขียว อ่าวพร้อมกันได้แค่ node เดียวเท่านั้น ป้องกัน Data Corruption
 storage: 1Gi = จองพื้นที่ 1GB
 ]
-
-
-
-
+อธิบายว่าไฟล์ day-09/lab13-commands.ps1 มีหน้าที่อะไร ทำงานอย่างไร
+[
+1. เปิดใช้งาน ingress
+2. deploy app 'result'
+3. สร้าง ingress
+]
+อธิบายส่วนสำคัญของ voting-ingress.yaml
+[
+voting.local ตั้งให้ วิ่งไปที่ service 'vote'
+voting.local/result ตั้งให้ วิ่งไปที่ service 'result'
+]
+ในเมื่อจะใช้ cloud kubernates อยู่แล้ว ทำไมถึงต้องเรียน ingress
+[เพราะใช้ Concept เดียวกัน]
+Ingress คืออะไร ช่วยเล่า Scenario ที่มี และไม่มีมันหน่อย
+[ทางเข้า HTTP/HTTPS จากข้างนอก Cluster เข้ามาหา Services ภายใน
+ถ้าไม่มี ต้องเปิด port แต่ละ Services
+ถ้ามี สามารถตั้ง routing ได้
+จัดการ HTTPS ที่จุดเดียว
+มี Concept คล้าย Nginx
+ทำหน้าที่เป็น Reverse Proxy / Router สำหรับ Kubernetes
+]
+เล่า Use Case ยอดนิยมของ Ingress บน Cloud
+[
+ให้เข้าถึงด้วย host url หรือ subdomain แทนที่จะเปิด port มีประโยชน์มากใน Microservices
+จัดการ https
+แบ่ง env เช่น dev staging และ prod
+จัดการ Rolling Update
+จุดรวม Security เช่น Rate Limit / Authentication
+Load Balancer แบบ 1 ตัว ลดค่าใช้จ่าย แทนที่จะมี 1 Load Balancer ต่อ 1 Service
+]
 
 
 รวมคำสั่ง
